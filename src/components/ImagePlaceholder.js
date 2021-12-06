@@ -1,16 +1,33 @@
-import { useRef, useCallback } from 'react';
+import { useRef, useCallback, useState } from 'react';
+import './ImagePlaceholder.css';
 
 function ImagePlaceholder({ handleAddImage }) {
   const imageInput = useRef(null);
+  const [inputStatus, setInputStatus] = useState(null);
+  const maxFileSize = 1024;
 
   const addImage = useCallback(() => {
+    setInputStatus(null);
     const file = imageInput.current.files[0];
-    handleAddImage(file);
+    const fileSize = Math.round(file.size / maxFileSize);
+    console.log(fileSize);
+
+    if (fileSize < 1024) {
+      setInputStatus(true);
+      handleAddImage(file);
+    } else {
+      setInputStatus(false);
+    }
   }, [handleAddImage]);
 
   return (
     <div className="image-placeholder">
-      <p>Select an image!</p>
+      <div className="text">
+        <p>Select an image!</p>
+        {inputStatus === false && (
+          <p className="error">File size is too big. (Max {maxFileSize})</p>
+        )}
+      </div>
       <input
         ref={imageInput}
         type="file"

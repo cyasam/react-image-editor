@@ -1,0 +1,7 @@
+.filters {
+  width: var(--filters-width);
+  padding: 0 30px;
+}
+.filters .filter label {
+  display: block;
+}

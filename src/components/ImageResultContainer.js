@@ -3,6 +3,8 @@ import imagedataFilters from 'imagedata-filters';
 import * as StackBlur from 'stackblur-canvas';
 import Compressor from 'compressorjs';
 
+import './ImageResultContainer.css';
+
 function ImageResultContainer({ filters, edited, image, handleDownloadUrl }) {
   const canvas = useRef();
   const context = useRef();
@@ -89,9 +91,10 @@ function ImageResultContainer({ filters, edited, image, handleDownloadUrl }) {
 
   useEffect(() => {
     if (filters && edited) {
+      handleDownloadUrl(null);
       changeImage(filters);
     }
-  }, [filters, edited, changeImage]);
+  }, [filters, edited, changeImage, handleDownloadUrl]);
 
   return (
     <div className="image-container">

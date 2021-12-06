@@ -1,3 +1,5 @@
+import './ImageContainer.css';
+
 function ImageContainer({ image }) {
   return (
     <div className="image-container">

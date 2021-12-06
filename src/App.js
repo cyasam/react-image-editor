@@ -2,10 +2,10 @@ import { useState, useCallback } from 'react';
 import ImageContainer from './components/ImageContainer';
 import ImageResultContainer from './components/ImageResultContainer';
 import ImagePlaceholder from './components/ImagePlaceholder';
-import DownloadImageButton from './components/DownloadImageButton';
 import './App.css';
 
 import { filterOptions } from './utils';
+import Filters from './components/Filters';
 
 const createImageObject = (file) => {
   const regex = /(?:\.([^.]+))?$/;
@@ -42,59 +42,46 @@ function App() {
 
   return (
     <div className="container">
-      {mainImage ? (
-        <div className="image-wrapper">
-          <div className="main-image">
-            <ImageContainer image={mainImage} />
-          </div>
+      <h1>Simple Image Editor</h1>
+      <div className="editor-container">
+        {mainImage ? (
+          <div className="image-wrapper">
+            <div className="main-image">
+              <ImageContainer image={mainImage} />
+            </div>
 
-          <div className="filters">
-            {filters.map((filter, index) => (
-              <div className="filter" key={index}>
-                <label>{filter.label}</label>
-                <input
-                  type="range"
-                  name={filter.name}
-                  value={filter.value}
-                  min={filter.min}
-                  max={filter.max}
-                  onChange={(e) => {
-                    setFilters((prevState) => {
-                      return prevState.map((filter) => {
-                        if (filter.name === e.target.name) {
-                          filter.value = parseInt(e.target.value);
-                        }
-
-                        return filter;
-                      });
-                    });
-
-                    setEdited(true);
-                  }}
-                />
-              </div>
-            ))}
-
-            {downLoadUrl && (
-              <DownloadImageButton
-                image={mainImage}
-                downLoadUrl={downLoadUrl}
-              />
-            )}
-          </div>
-
-          <div className="image-result">
-            <ImageResultContainer
-              edited={edited}
-              image={mainImage}
+            <Filters
               filters={filters}
-              handleDownloadUrl={handleDownloadUrl}
+              downLoadUrl={downLoadUrl}
+              mainImage={mainImage}
+              onChange={(e) => {
+                setFilters((prevState) => {
+                  return prevState.map((filter) => {
+                    if (filter.name === e.target.name) {
+                      filter.value = parseInt(e.target.value);
+                    }
+
+                    return filter;
+                  });
+                });
+
+                setEdited(true);
+              }}
             />
+
+            <div className="image-result">
+              <ImageResultContainer
+                edited={edited}
+                image={mainImage}
+                filters={filters}
+                handleDownloadUrl={handleDownloadUrl}
+              />
+            </div>
           </div>
-        </div>
-      ) : (
-        <ImagePlaceholder handleAddImage={handleAddImage} />
-      )}
+        ) : (
+          <ImagePlaceholder handleAddImage={handleAddImage} />
+        )}
+      </div>
     </div>
   );
 }
