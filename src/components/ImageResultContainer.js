@@ -95,8 +95,8 @@ function ImageResultContainer({ filters, edited, image, handleDownloadUrl }) {
 
   return (
     <div className="image-container">
-      <div className="image-canvas">
-        <canvas ref={canvas} className="main-image" />
+      <div className="canvas-wrapper">
+        <canvas ref={canvas} className="canvas" />
       </div>
     </div>
   );

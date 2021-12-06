@@ -1,13 +1,12 @@
-.container {
-  display: flex;
-  height: 100vh;
-  justify-content: center;
-  align-items: center;
+:root {
+  --filters-width: 250px;
 }
 
-.main-image {
-  padding: 0;
-  margin: 0;
+.container {
+  display: flex;
+  min-height: 100vh;
+  justify-content: center;
+  align-items: center;
 }
 
 .image-placeholder {
@@ -36,17 +35,26 @@
 
 .image-wrapper {
   display: flex;
-  height: 90%;
-}
-
-.image-container > div,
-.image-container > .main-image {
-  display: flex;
   justify-content: center;
+  padding: 40px;
 }
 
 .image-container img,
 .image-container canvas {
-  max-width: 80%;
+  max-width: 100%;
   object-fit: cover;
+}
+
+.filters {
+  width: var(--filters-width);
+  padding: 0 30px;
+}
+
+.main-image,
+.image-result {
+  width: calc(50% - var(--filters-width));
+}
+
+.filters .filter label {
+  display: block;
 }

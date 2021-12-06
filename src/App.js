@@ -48,10 +48,10 @@ function App() {
             <ImageContainer image={mainImage} />
           </div>
 
-          <div>
+          <div className="filters">
             {filters.map((filter, index) => (
-              <div key={index}>
-                {filter.label}
+              <div className="filter" key={index}>
+                <label>{filter.label}</label>
                 <input
                   type="range"
                   name={filter.name}

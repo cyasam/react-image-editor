@@ -1,9 +1,7 @@
 function ImageContainer({ image }) {
   return (
     <div className="image-container">
-      <figure className="main-image">
-        <img src={image.url} alt="" />
-      </figure>
+      <img src={image.url} alt="" />
     </div>
   );
 }
