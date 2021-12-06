@@ -1,7 +1,24 @@
-.filters {
+.filters-wrapper {
   width: var(--filters-width);
-  padding: 0 30px;
+  padding: 15px 35px;
 }
 .filters .filter label {
   display: block;
+}
+
+@media screen and (max-width: 1023px) {
+  .filters-wrapper {
+    width: 100%;
+    margin: 30px 0;
+    padding: 0;
+  }
+
+  .filters {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .filters .filter {
+    margin-right: 5px;
+  }
 }

@@ -25,7 +25,7 @@ function ImagePlaceholder({ handleAddImage }) {
       <div className="text">
         <p>Select an image!</p>
         {inputStatus === false && (
-          <p className="error">File size is too big. (Max {maxFileSize})</p>
+          <p className="error">File size is too big. (Max {maxFileSize} KB)</p>
         )}
       </div>
       <input

@@ -3,22 +3,24 @@ import './Filters.css';
 
 function Filters({ filters, downLoadUrl, mainImage, onChange }) {
   return (
-    <div className="filters">
-      {filters.map((filter, index) => (
-        <div className="filter" key={index}>
-          <label>{filter.label}</label>
-          <input
-            type="range"
-            name={filter.name}
-            value={filter.value}
-            min={filter.min}
-            max={filter.max}
-            onChange={(e) => {
-              onChange(e);
-            }}
-          />
-        </div>
-      ))}
+    <div className="filters-wrapper">
+      <div className="filters">
+        {filters.map((filter, index) => (
+          <div className="filter" key={index}>
+            <label>{filter.label}</label>
+            <input
+              type="range"
+              name={filter.name}
+              value={filter.value}
+              min={filter.min}
+              max={filter.max}
+              onChange={(e) => {
+                onChange(e);
+              }}
+            />
+          </div>
+        ))}
+      </div>
 
       {downLoadUrl && (
         <DownloadImageButton image={mainImage} downLoadUrl={downLoadUrl} />
