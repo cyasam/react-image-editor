@@ -1,6 +1,12 @@
+import './DownloadImageButton.css';
+
 function DownloadImageButton({ image, downLoadUrl }) {
   return (
-    <a href={downLoadUrl} download={`${image.name}-result.${image.ext}`}>
+    <a
+      className="download-button"
+      href={downLoadUrl}
+      download={`${image.name}-result.${image.extension}`}
+    >
       Download
     </a>
   );

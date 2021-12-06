@@ -9,16 +9,18 @@ import { filterOptions } from './utils';
 
 const createImageObject = (file) => {
   const regex = /(?:\.([^.]+))?$/;
-  const imageExtension = regex.exec(file.name)[1];
-  const imageExtensionWithDot = regex.exec(file.name)[0];
-  const imageName = file.name.split(imageExtensionWithDot)[0];
+  const extension = regex.exec(file.name)[1];
+  const extensionWithDot = regex.exec(file.name)[0];
+  const name = file.name.split(extensionWithDot)[0];
+  const type = file.type;
 
-  const imageUrl = URL.createObjectURL(file);
+  const url = URL.createObjectURL(file);
 
   return {
-    name: imageName,
-    ext: imageExtension,
-    url: imageUrl,
+    name,
+    extension,
+    url,
+    type,
   };
 };
 
@@ -30,6 +32,7 @@ function App() {
 
   const handleAddImage = useCallback((file) => {
     const object = createImageObject(file);
+    console.log(object);
     setMainImage(object);
   }, []);
 

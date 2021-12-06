@@ -1,6 +1,7 @@
 import { useRef, useEffect, useCallback } from 'react';
 import imagedataFilters from 'imagedata-filters';
 import * as StackBlur from 'stackblur-canvas';
+import Compressor from 'compressorjs';
 
 function ImageResultContainer({ filters, edited, image, handleDownloadUrl }) {
   const canvas = useRef();
@@ -71,11 +72,19 @@ function ImageResultContainer({ filters, edited, image, handleDownloadUrl }) {
 
         ctx.putImageData(imageData, 0, 0);
         canvas.current.toBlob((blob) => {
-          handleDownloadUrl(URL.createObjectURL(blob));
+          new Compressor(blob, {
+            mimeType: image.type,
+            success(result) {
+              handleDownloadUrl(URL.createObjectURL(result));
+            },
+            error(err) {
+              console.log(err.message);
+            },
+          });
         });
       });
     },
-    [handleDownloadUrl, drawImage]
+    [handleDownloadUrl, image.type, drawImage]
   );
 
   useEffect(() => {
