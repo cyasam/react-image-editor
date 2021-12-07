@@ -1,19 +1,20 @@
-import { useRef, useEffect, useCallback } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import imagedataFilters from 'imagedata-filters';
 import * as StackBlur from 'stackblur-canvas';
 import Compressor from 'compressorjs';
+import Loading from './Loading';
 
 import './ImageResultContainer.css';
 
-function ImageResultContainer({ filters, edited, image, onSuccess }) {
+function ImageResultContainer({ filters, edited, image, onInit, onSuccess }) {
   const canvas = useRef();
   const context = useRef();
+  const [loading, setLoading] = useState(false);
 
   const drawImage = useCallback(
     (ctx, callback) => {
       const img = new Image();
-      const imageUrl = image.url;
-      img.src = imageUrl;
+      img.src = image.url;
 
       img.addEventListener('load', () => {
         ctx.canvas.width = img.width;
@@ -25,14 +26,18 @@ function ImageResultContainer({ filters, edited, image, onSuccess }) {
         }
       });
     },
-    [image.url]
+    [image]
   );
 
   const initImage = useCallback(() => {
+    setLoading(true);
     context.current = canvas.current.getContext('2d');
     const ctx = context.current;
-    drawImage(ctx);
-  }, [drawImage]);
+    drawImage(ctx, () => {
+      setLoading(false);
+      onInit && onInit();
+    });
+  }, [drawImage, onInit]);
 
   useEffect(() => {
     initImage();
@@ -42,7 +47,7 @@ function ImageResultContainer({ filters, edited, image, onSuccess }) {
     (filters) => {
       const ctx = context.current;
 
-      drawImage(ctx, function () {
+      drawImage(ctx, () => {
         let imageData = ctx.getImageData(
           0,
           0,
@@ -77,7 +82,7 @@ function ImageResultContainer({ filters, edited, image, onSuccess }) {
           new Compressor(blob, {
             mimeType: image.type,
             success(result) {
-              onSuccess(result);
+              onSuccess && onSuccess(result);
             },
             error(err) {
               console.log(err.message);
@@ -97,9 +102,15 @@ function ImageResultContainer({ filters, edited, image, onSuccess }) {
 
   return (
     <div className="image-container">
-      <div className="canvas-wrapper">
-        <canvas ref={canvas} className="canvas" />
-      </div>
+      {loading && <Loading style={{ margin: '40px 0' }} />}
+      <canvas
+        ref={canvas}
+        style={{
+          opacity: loading ? 0 : 1,
+          visibility: loading ? 'hidden' : 'visible',
+        }}
+        className="canvas"
+      />
     </div>
   );
 }

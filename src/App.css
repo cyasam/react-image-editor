@@ -24,6 +24,11 @@ h1 {
   justify-content: center;
 }
 
+.main-image,
+.image-result {
+  flex: 1;
+}
+
 .download-area {
   margin-top: 20px;
   text-align: center;

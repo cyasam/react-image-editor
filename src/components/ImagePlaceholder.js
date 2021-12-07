@@ -4,6 +4,7 @@ import './ImagePlaceholder.css';
 function ImagePlaceholder({ handleAddImage }) {
   const imageInput = useRef(null);
   const [inputStatus, setInputStatus] = useState(null);
+  const [draggedOver, setDraggedOver] = useState(false);
   const maxFileSize = 1024;
 
   const addImage = useCallback(() => {
@@ -19,10 +20,30 @@ function ImagePlaceholder({ handleAddImage }) {
     }
   }, [handleAddImage]);
 
+  const draggedOverStyle = {
+    backgroundColor: draggedOver ? '#ccc' : 'rgb(245, 245, 245)',
+  };
+
   return (
-    <div className="image-placeholder">
+    <div
+      className="image-placeholder"
+      draggable={true}
+      style={draggedOverStyle}
+      onDragOver={() => {
+        if (!draggedOver) {
+          setDraggedOver(true);
+        }
+      }}
+      onDragLeave={() => {
+        if (draggedOver) {
+          setDraggedOver(false);
+        }
+      }}
+    >
       <div className="text">
-        <p>Select an image!</p>
+        {!draggedOver && <p>Select an image!</p>}
+        {draggedOver && <p>Dropped the image!</p>}
+
         {inputStatus === false && (
           <p className="error">File size is too big. (Max {maxFileSize} KB)</p>
         )}
