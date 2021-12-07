@@ -24,6 +24,11 @@ h1 {
   justify-content: center;
 }
 
+.download-area {
+  margin-top: 20px;
+  text-align: center;
+}
+
 @media screen and (max-width: 1023px) {
   .image-wrapper {
     flex-direction: column;

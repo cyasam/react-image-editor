@@ -10,7 +10,6 @@ function ImagePlaceholder({ handleAddImage }) {
     setInputStatus(null);
     const file = imageInput.current.files[0];
     const fileSize = Math.round(file.size / maxFileSize);
-    console.log(fileSize);
 
     if (fileSize < 1024) {
       setInputStatus(true);

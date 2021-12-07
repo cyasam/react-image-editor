@@ -2,10 +2,12 @@ import { useState, useCallback } from 'react';
 import ImageContainer from './components/ImageContainer';
 import ImageResultContainer from './components/ImageResultContainer';
 import ImagePlaceholder from './components/ImagePlaceholder';
+import DownloadImageButton from './components/DownloadImageButton';
 import './App.css';
 
 import { filterOptions } from './utils';
 import Filters from './components/Filters';
+import Loading from './components/Loading';
 
 const createImageObject = (file) => {
   const regex = /(?:\.([^.]+))?$/;
@@ -26,13 +28,12 @@ const createImageObject = (file) => {
 
 function App() {
   const [mainImage, setMainImage] = useState(null);
-  const [edited, setEdited] = useState(false);
+  const [edited, setEdited] = useState(null);
   const [filters, setFilters] = useState(filterOptions);
   const [downLoadUrl, setDownloadUrl] = useState(null);
 
   const handleAddImage = useCallback((file) => {
     const object = createImageObject(file);
-    console.log(object);
     setMainImage(object);
   }, []);
 
@@ -54,27 +55,42 @@ function App() {
               filters={filters}
               downLoadUrl={downLoadUrl}
               mainImage={mainImage}
-              onChange={(e) => {
+              onChange={({ name, values }) => {
+                setEdited('editing');
                 setFilters((prevState) => {
                   return prevState.map((filter) => {
-                    if (filter.name === e.target.name) {
-                      filter.value = parseInt(e.target.value);
+                    if (filter.name === name) {
+                      filter.value = parseInt(values);
                     }
 
                     return filter;
                   });
                 });
-
-                setEdited(true);
               }}
-            />
+              onFinalChange={() => setEdited('loading')}
+            >
+              <div className="download-area">
+                {edited === 'editing' && <p>Editing...</p>}
+                {edited === 'loading' && <Loading />}
+                {edited === 'success' && (
+                  <DownloadImageButton
+                    image={mainImage}
+                    downLoadUrl={downLoadUrl}
+                  />
+                )}
+              </div>
+            </Filters>
 
             <div className="image-result">
               <ImageResultContainer
                 edited={edited}
                 image={mainImage}
                 filters={filters}
-                handleDownloadUrl={handleDownloadUrl}
+                style={{ opacity: edited === 'loading' ? 0.8 : 1 }}
+                onSuccess={(result) => {
+                  setEdited('success');
+                  handleDownloadUrl(URL.createObjectURL(result));
+                }}
               />
             </div>
           </div>

@@ -5,7 +5,7 @@ import Compressor from 'compressorjs';
 
 import './ImageResultContainer.css';
 
-function ImageResultContainer({ filters, edited, image, handleDownloadUrl }) {
+function ImageResultContainer({ filters, edited, image, onSuccess }) {
   const canvas = useRef();
   const context = useRef();
 
@@ -77,7 +77,7 @@ function ImageResultContainer({ filters, edited, image, handleDownloadUrl }) {
           new Compressor(blob, {
             mimeType: image.type,
             success(result) {
-              handleDownloadUrl(URL.createObjectURL(result));
+              onSuccess(result);
             },
             error(err) {
               console.log(err.message);
@@ -86,15 +86,14 @@ function ImageResultContainer({ filters, edited, image, handleDownloadUrl }) {
         });
       });
     },
-    [handleDownloadUrl, image.type, drawImage]
+    [onSuccess, image.type, drawImage]
   );
 
   useEffect(() => {
-    if (filters && edited) {
-      handleDownloadUrl(null);
+    if (edited === 'loading') {
       changeImage(filters);
     }
-  }, [filters, edited, changeImage, handleDownloadUrl]);
+  }, [filters, edited, changeImage]);
 
   return (
     <div className="image-container">
