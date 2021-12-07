@@ -41,8 +41,8 @@ function ImagePlaceholder({ handleAddImage }) {
       }}
     >
       <div className="text">
-        {!draggedOver && <p>Select an image!</p>}
-        {draggedOver && <p>Dropped the image!</p>}
+        {!draggedOver && <p>Select or drop an image!</p>}
+        {draggedOver && <p>Dropping the image!</p>}
 
         {inputStatus === false && (
           <p className="error">File size is too big. (Max {maxFileSize} KB)</p>
