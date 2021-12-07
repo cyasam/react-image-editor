@@ -5,14 +5,14 @@ function ImagePlaceholder({ handleAddImage }) {
   const imageInput = useRef(null);
   const [inputStatus, setInputStatus] = useState(null);
   const [draggedOver, setDraggedOver] = useState(false);
-  const maxFileSize = 1024;
+  const maxFileSize = 2048;
 
   const addImage = useCallback(() => {
     setInputStatus(null);
     const file = imageInput.current.files[0];
     const fileSize = Math.round(file.size / maxFileSize);
 
-    if (fileSize < 1024) {
+    if (fileSize < maxFileSize) {
       setInputStatus(true);
       handleAddImage(file);
     } else {
